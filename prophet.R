@@ -183,7 +183,7 @@ subset_train$trans.preds <- subset_train$sum.trans
 apply_model <- function(column, data) {
   results_list <- list()
   for (value in unique(column)) {
-    data_filtered <- filter(data, family == value)
+    data_filtered <- filter(data, store_family == value)
     df <- data_filtered
     df <- df %>% mutate(ds= date, y= sum.sales)
     df <- column_to_rownames(df, var = "date")
@@ -192,7 +192,7 @@ apply_model <- function(column, data) {
     forecast <- predict(m, future)
     plot(m, forecast)
     forecast <- tail(forecast, 14)
-    data_filtered_test <- filter(test, family == value)
+    data_filtered_test <- filter(test, store_family == value)
     act <- data_filtered_test$sum.sales
     rm <- rmsle(forecast$yhat, act)
     print(paste0("################## ",value, " ##################"))
